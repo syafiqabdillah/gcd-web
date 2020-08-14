@@ -2,10 +2,7 @@
   <div class="home">
     <div class="table-location">
       <b-form>
-        <b-form-group
-          id="query-search-group"
-          label-for="query-search"
-        >
+        <b-form-group id="query-search-group" label-for="query-search">
           <b-form-input
             id="query-search"
             v-model="query"
@@ -14,7 +11,32 @@
           ></b-form-input>
         </b-form-group>
       </b-form>
-      <b-table striped hover :items="computedLocations" :fields="fields"> </b-table>
+      <b-table
+        striped
+        hover
+        :items="computedLocations"
+        :fields="fields"
+        :busy="isBusy"
+        responsive
+      >
+        <template v-slot:cell(is_crowded)="data">
+          <b v-if="data.value" class="text-danger">
+            <b-badge variant="danger">HIGH</b-badge></b
+          >
+          <b v-else class="text-success">
+            <b-badge variant="success">LOW</b-badge></b
+          >
+        </template>
+        <template v-slot:table-busy>
+          <div class="text-center my-2">
+            <b-spinner
+              variant="primary"
+              label="Spinning"
+              class="align-middle"
+            ></b-spinner>
+          </div>
+        </template>
+      </b-table>
     </div>
   </div>
 </template>
@@ -29,11 +51,12 @@ export default {
   components: {},
   data() {
     return {
+      isBusy: true,
       query: "",
       fields: [
         "location_name",
         "sublocation_name",
-        "is_crowded",
+        { key: "is_crowded", label: "Crowd Density" },
         "last_update",
       ],
       locations: [], // list of locations, each location contains sublocations and its most recent crowd density
@@ -58,6 +81,7 @@ export default {
             });
           });
         });
+        this.toggleBusy();
       })
       .catch((e) => {
         console.log(String(e));
@@ -65,13 +89,20 @@ export default {
   },
   computed: {
     computedLocations() {
-      return this.locations.filter(loc => {
-        console.log()
-        return loc.location_name.toLowerCase().includes(this.query.toLowerCase()) 
-        || loc.sublocation_name.toLowerCase().includes(this.query)
-      })
-    }
-  }
+      return this.locations.filter((loc) => {
+        console.log();
+        return (
+          loc.location_name.toLowerCase().includes(this.query.toLowerCase()) ||
+          loc.sublocation_name.toLowerCase().includes(this.query)
+        );
+      });
+    },
+  },
+  methods: {
+    toggleBusy() {
+      this.isBusy = !this.isBusy;
+    },
+  },
 };
 </script>
 
