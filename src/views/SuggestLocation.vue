@@ -1,17 +1,17 @@
 <template>
-  <div class="add-location text-left">
+  <div class="suggest-location text-left">
     <div align="center">
-      <h3>Add New Location</h3>
+      <h3>Suggest New Location</h3>
     </div>
 
-    <b-form @submit="onSubmit" class="add-location-form">
+    <b-form @submit="onSubmit" class="suggestion-form">
       <b-form-group
-        id="input-add-location-form-1"
+        id="input-suggestion-form-1"
         label="Location name:"
         label-for="location-name-form"
       >
         <b-form-input
-          id="add-location-name-form"
+          id="location-name-form"
           v-model="form.location_name"
           required
           placeholder="Enter location name"
@@ -20,7 +20,7 @@
 
       <b-form-group
         id="input-suggestion-form-2"
-        label="Sublocation names:"
+        label="Sublocation name:"
         label-for="sublocation-name-form"
       >
         <b-form-input
@@ -38,35 +38,24 @@
       </b-button>
     </b-form>
 
-    <div class="table-location">
-
-      <b-form>
-        <b-form-group id="query-search-group" label-for="query-search">
-          <b-form-input
-            id="query-search"
-            v-model="query"
-            required
-            placeholder="Search Crowd Information by Location or Sub Location"
-          ></b-form-input>
-        </b-form-group>
-      </b-form>
-      
+    <div id="location-table">
       <b-table
         striped
         hover
-        :items="computedLocations"
+        show-empty
+        :items="computedSuggestedLocation"
         :fields="fields"
         :busy="isBusy"
-        show-empty
         responsive
         class="text-left"
       >
-        <template v-slot:cell(sublocation_status)="data">
-          <b-badge  v-if="data.value === 'active'" variant="primary">ACTIVE</b-badge>
-          <b-badge  v-else-if="data.value === 'inactive'" variant="secondary">INACTIVE</b-badge>
-          <b-badge  v-else-if="data.value === 'suggested'" variant="warning">SUGGESTED</b-badge>
+        <template v-slot:cell(is_active)="data">
+          <p v-if="data.value">
+            Yes
+          </p>
+          <p v-else>No</p>
         </template>
-        
+
         <template v-slot:table-busy>
           <div class="text-center my-2">
             <b-spinner
@@ -85,27 +74,26 @@
 import axios from "axios";
 
 export default {
-  name: "AddLocation",
+  name: "SuggestLocation",
   data() {
     return {
       form: {
         location_name: "",
         sublocation_names: "",
       },
-      isAddingLocation: false,
       locations: [],
       fields: [
-        { key: "location_name", label: "Location", sortable: true },
-        { key: "sublocation_name", label: "Sub Location", sortable: true },
-        { key: "sublocation_status", label: "IoT Device Status", sortable: false },
+        { key: "location_name", label: "Location" },
+        { key: "sublocation_name", label: "Sublocation" },
+        { key: "sublocation_status", label: "Status" },
       ],
       isBusy: true,
-      query: ""
+      isAddingLocation: false,
     };
   },
   created() {
     axios
-      .get("http://localhost:5000/get-all-sublocations")
+      .get("http://localhost:5000/get-suggested-locations")
       .then((res) => {
         const data = res.data.data;
         const keys = Object.keys(data);
@@ -121,13 +109,14 @@ export default {
             });
           });
         });
+        // this.locations = data;
       })
       .catch((e) => {
         alert(String(e));
         this.locations = [];
       })
       .finally(() => {
-        this.isBusy = !this.isBusy
+        this.toggleBusy();
       });
   },
   computed: {
@@ -143,12 +132,13 @@ export default {
       if (this.form.location_name !== "") {
         this.isAddingLocation = true;
         axios
-          .post("http://localhost:5000/add-location", {
+          .post("http://localhost:5000/suggest-location", {
             location_name: this.form.location_name,
             sublocation_names: this.form.sublocation_names,
           })
           .then(() => {
             alert("Successfully added location");
+            this.locations.push(this.form.location_name);
             this.form.location_name = "";
           })
           .catch((err) => {
@@ -157,7 +147,7 @@ export default {
           })
           .finally(() => {
             this.isAddingLocation = false;
-            location.href ='/'
+            location.reload();
           });
       }
     },
@@ -165,21 +155,11 @@ export default {
       this.isBusy = !this.isBusy;
     },
   },
-  computed: {
-    computedLocations() {
-      return this.locations.filter((loc) => {
-        return (
-          loc.location_name.toLowerCase().includes(this.query.toLowerCase()) ||
-          loc.sublocation_name.toLowerCase().includes(this.query)
-        );
-      });
-    },
-  },
 };
 </script>
 
 <style scoped>
-.add-location-form {
+.suggestion-form {
   margin-top: 30px;
   margin-left: 30px;
   margin-right: 30px;
@@ -188,8 +168,5 @@ export default {
   margin-top: 30px;
   margin-left: 30px;
   margin-right: 30px;
-}
-.table-location{
-  margin: 30px;
 }
 </style>

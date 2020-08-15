@@ -16,6 +16,11 @@ Vue.use(VueRouter)
     component: () => import(/* webpackChunkName: "about" */ '../views/AddLocation.vue')
   },
   {
+    path: '/suggest-location',
+    name: 'SuggestLocation',
+    component: () => import(/* webpackChunkName: "about" */ '../views/SuggestLocation.vue')
+  },
+  {
     path: '/dashboard',
     name: 'Dashboard',
     component: () => import('../views/Dashboard.vue')

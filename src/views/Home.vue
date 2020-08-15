@@ -7,7 +7,7 @@
             id="query-search"
             v-model="query"
             required
-            placeholder="Search Location or Sublocation"
+            placeholder="Search Crowd Information by Location or Sub Location"
           ></b-form-input>
         </b-form-group>
       </b-form>
@@ -17,7 +17,9 @@
         :items="computedLocations"
         :fields="fields"
         :busy="isBusy"
+        show-empty
         responsive
+        class="text-left"
       >
         <template v-slot:cell(is_crowded)="data">
           <b v-if="data.value" class="text-danger">
@@ -27,6 +29,15 @@
             <b-badge variant="success">LOW</b-badge></b
           >
         </template>
+        <template v-slot:cell(status)="data">
+          <b v-if="data.value === 'active'" class="text-danger">
+            <b-badge variant="primary">ACTIVE</b-badge></b
+          >
+          <b v-else class="text-success">
+            <b-badge variant="secondary">INACTIVE</b-badge></b
+          >
+        </template>
+        
         <template v-slot:table-busy>
           <div class="text-center my-2">
             <b-spinner
@@ -54,8 +65,8 @@ export default {
       isBusy: true,
       query: "",
       fields: [
-        "location_name",
-        "sublocation_name",
+        { key: "location_name", label: "Location" },
+        { key: "sublocation_name", label: "Sub Location" },
         { key: "is_crowded", label: "Crowd Density" },
         "last_update",
       ],
@@ -64,7 +75,7 @@ export default {
   },
   created() {
     axios
-      .get("http://localhost:5000/get-locations")
+      .get("http://localhost:5000/get-crowd-density-information")
       .then((res) => {
         const data = res.data.data;
         const keys = Object.keys(data);
@@ -78,19 +89,22 @@ export default {
               sublocation_name: sublocation.sublocation_name,
               is_crowded: sublocation.is_crowded,
               last_update: sublocation.created_at,
+              status: sublocation.status,
             });
           });
         });
-        this.toggleBusy();
       })
       .catch((e) => {
-        console.log(String(e));
+        alert(String(e));
+        this.locations = [];
+      })
+      .finally(() => {
+        this.toggleBusy();
       });
   },
   computed: {
     computedLocations() {
       return this.locations.filter((loc) => {
-        console.log();
         return (
           loc.location_name.toLowerCase().includes(this.query.toLowerCase()) ||
           loc.sublocation_name.toLowerCase().includes(this.query)

@@ -2,8 +2,9 @@
   <div id="app">
     <div id="nav">
       <router-link to="/">Home</router-link> |
-      <router-link to="/add-location">Suggest Location</router-link> |
-      <router-link to="/dashboard">Dashboard</router-link>
+      <router-link to="/add-location">Add Location</router-link>
+      <!-- <router-link to="/suggest-location">Suggest Location</router-link> |
+      <router-link to="/dashboard">Dashboard</router-link> -->
     </div>
     <router-view/>
   </div>
@@ -28,6 +29,6 @@
 }
 
 #nav a.router-link-exact-active {
-  color: #42b983;
+  color: #318fb5;
 }
 </style>
