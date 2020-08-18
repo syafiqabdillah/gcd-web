@@ -14,7 +14,7 @@
             <b-form>
               <b-form-group
                 id="input-contact-us-email-group"
-                label="Email"
+                label="Email*"
                 label-for="input-contact-us-email"
               >
                 <b-form-input
@@ -27,7 +27,7 @@
 
               <b-form-group
                 id="input-contact-us-subject-group"
-                label="Subject"
+                label="Subject*"
                 label-for="input-contact-us-subject"
               >
                 <b-form-input
@@ -39,12 +39,13 @@
 
               <b-form-group
                 id="input-contact-us-message-group"
-                label="Message"
+                label="Message*"
                 label-for="input-contact-us-message"
               >
                 <b-form-textarea
                   id="input-contact-us-message"
                   v-model="form.message"
+                  required
                   rows="6"
                 ></b-form-textarea>
               </b-form-group>
