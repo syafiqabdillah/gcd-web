@@ -75,7 +75,7 @@ export default {
   },
   created() {
     axios
-      .get("http://localhost:5000/get-crowd-density-information")
+      .get("http://gcd-api.herokuapp.com/get-crowd-density-information")
       .then((res) => {
         const data = res.data.data;
         const keys = Object.keys(data);

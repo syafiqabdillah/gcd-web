@@ -105,7 +105,7 @@ export default {
   },
   created() {
     axios
-      .get("http://localhost:5000/get-all-sublocations")
+      .get("http://gcd-api.herokuapp.com/get-all-sublocations")
       .then((res) => {
         const data = res.data.data;
         const keys = Object.keys(data);

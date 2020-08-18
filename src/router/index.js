@@ -16,6 +16,11 @@ Vue.use(VueRouter)
     component: () => import(/* webpackChunkName: "about" */ '../views/AddLocation.vue')
   },
   {
+    path: '/contact-us',
+    name: 'ContactUs',
+    component: () => import(/* webpackChunkName: "about" */ '../views/ContactUs.vue')
+  },
+  {
     path: '/suggest-location',
     name: 'SuggestLocation',
     component: () => import(/* webpackChunkName: "about" */ '../views/SuggestLocation.vue')
