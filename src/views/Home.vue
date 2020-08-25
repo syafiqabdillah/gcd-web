@@ -22,28 +22,50 @@
                 <p style="margin:0;" class="p-1">Sort By</p> 
             </div>
             <div class="col d-flex flex-row justify-content-center">
-                <input class="w-100 ml-1 mr-1 p-1 btn btn-outline-secondary" type="button" value="Place">
+                <input 
+                    class="w-100 ml-1 mr-1 p-1 btn "
+                    :class="(sortedBy == 'place')?'btn-outline-secondary-focus':'btn-outline-secondary'" 
+                    type="button" 
+                    value="Place" 
+                    @click="sortedBy = 'place'"
+                >
             </div>
             <div class="col">
-                <input class="w-100 ml-1 mr-1 p-1 btn btn-outline-secondary" type="button" value="Venue">
+                <input 
+                    class="w-100 ml-1 mr-1 p-1 btn "
+                    :class="(sortedBy == 'venue')?'btn-outline-secondary-focus':'btn-outline-secondary'" 
+                    type="button" 
+                    value="Venue" 
+                    @click="sortedBy = 'venue'"
+                >
             </div>
             <div class="col">
-                <input class="w-100 ml-1 mr-1 p-1 btn btn-outline-secondary" type="button" value="Time Update">
+                <input 
+                    class="w-100 ml-1 mr-1 p-1 btn "
+                    :class="(sortedBy == 'time')?'btn-outline-secondary-focus':'btn-outline-secondary'" 
+                    type="button" 
+                    value="Time Update" 
+                    @click="sortedBy = 'time'"
+                >
             </div>
             <div class="col">
-                <input class="w-100 ml-1 mr-1 p-1 btn btn-outline-secondary" type="button" value="Crowd Density">
+                <input 
+                    class="w-100 ml-1 mr-1 p-1 btn "
+                    :class="(sortedBy == 'crowd')?'btn-outline-secondary-focus':'btn-outline-secondary'" 
+                    type="button" 
+                    value="Crowd Density" 
+                    @click="sortedBy = 'crowd'"
+                >
             </div>
 
         </div>
         
     </div>
 
-
-
     <div class="row d-flex flex-row justify-content-center">
 
         <div class="width-location" v-if="!isBusy">
-            <div v-for="(item, index) in computedLocations" :key="index" style="width:100%; margin-bottom: 8px">
+            <div v-for="(item, index) in sortedLocations" :key="index" style="width:100%; margin-bottom: 8px">
                 <location-card 
                     :locationName="item.location_name" 
                     :sublocationName="item.sublocation_name" 
@@ -68,6 +90,7 @@
 // @ is an alias to /src
 import LocationCard from "@/components/LocationCard.vue";
 import axios from "axios";
+import moment from 'moment';
 
 export default {
     name: "Home",
@@ -78,6 +101,7 @@ export default {
         return {
             isBusy: true,
             query: "",
+            sortedBy: "",
             fields: [{
                     key: "location_name",
                     label: "Location"
@@ -133,6 +157,26 @@ export default {
                 );
             });
         },
+        sortedLocations() {
+            if (this.sortedBy == "place"){
+                return this.locations.sort((a, b) => (a.location_name.localeCompare(b.location_name)))
+
+            } else if (this.sortedBy == "venue"){
+                return this.locations.sort((a, b) => (a.sublocation_name.localeCompare(b.sublocation_name)))
+
+            } else if (this.sortedBy == "time"){
+                return this.locations.sort((a, b) => 
+                    (moment(a.last_update).isAfter(b.last_update)? 1: -1)
+                )
+
+            } else if (this.sortedBy == "crowd"){
+                return this.locations.sort((a, b) => 
+                    (a.is_crowded - b.is_crowded)
+                )
+            } else {
+                return this.locations
+            }
+        }
     },
     methods: {
         toggleBusy() {
@@ -151,6 +195,20 @@ export default {
 .btn-outline-secondary {
     background-color: white;
     border-color: #CED4DA;
+    font-size: 15px;
+}
+
+.btn-outline-secondary-focus {
+    background-color: #4F59B0;
+    border-color: #CED4DA;
+    color: white;
+    font-size: 15px;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #4F59B0;
+    border-color: #CED4DA;
+    color: white;
     font-size: 15px;
 }
 
