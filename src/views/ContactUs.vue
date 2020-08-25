@@ -1,16 +1,14 @@
 <template>
-  <div class=" text-left">
-    <div align="center">
+  <div class="container text-left">
+    <div align="center" class="mb-4">
       <h3>
         Contact Us
       </h3>
     </div>
 
-    <div class="contact-us-container">
-      <b-row>
-        <b-col></b-col>
-        <b-col cols="12" md="6">
-          <b-card>
+    <div class="contact-us-container d-flex flex-row justify-content-center">
+        <div style="width: 65%">
+          <b-card style="padding: 25px 50px 0px 50px;" class="mb-4">
             <b-form>
               <b-form-group
                 id="input-contact-us-email-group"
@@ -21,6 +19,7 @@
                   id="input-contact-us-email"
                   v-model="form.email"
                   type="email"
+                  placeholder="Enter Your Email Address"
                   required
                 ></b-form-input>
               </b-form-group>
@@ -33,6 +32,7 @@
                 <b-form-input
                   id="input-contact-us-subject"
                   v-model="form.subject"
+                  placeholder="Input Your Subject"
                   required
                 ></b-form-input>
               </b-form-group>
@@ -45,24 +45,26 @@
                 <b-form-textarea
                   id="input-contact-us-message"
                   v-model="form.message"
+                  placeholder="Input Your Message"
                   required
                   rows="6"
                 ></b-form-textarea>
               </b-form-group>
 
-              <b-button block type="submit" variant="primary">
+              <div class="d-flex flex-row justify-content-center">
+                <b-button block type="submit" style="width: 50%; background-color: #4F59B0; border-width: 0px; padding: 10px;">
                 <b-spinner
                   type="grow"
                   small
                   v-if="isAddingLocation"
                 ></b-spinner>
-                {{ isAddingLocation ? "Submitting" : "Submit" }}
+                {{ isAddingLocation ? "Sending" : "Send" }}
               </b-button>
+
+              </div>
             </b-form>
           </b-card>
-        </b-col>
-        <b-col></b-col>
-      </b-row>
+        </div>
     </div>
   </div>
 </template>
@@ -85,9 +87,32 @@ export default {
 
 <style scoped>
 .contact-us-container {
-  margin: 30px;
+  width: 100%;
 }
 button {
     background-color: #318fb5;
 }
+
+input, textarea {
+  border-width: 0;
+  border-bottom-width: 2px;
+}
+
+input:focus, textarea:focus {
+  border-width: 0;
+  border-bottom-width: 2px;
+  box-shadow: 0 1px 1px rgba(81, 203, 238, 1);
+  color: black;
+}
+
+input:focus::placeholder, textarea:focus::placeholder {
+  color: rgba(81, 203, 238, 1);
+  
+}
+
+label {
+  color: black;
+}
+
+
 </style>

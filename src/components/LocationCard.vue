@@ -1,18 +1,127 @@
 <template>
-  <div>
-      <b-card>
-          <h3>{{location_name}}</h3>
-      </b-card>
-  </div>
+<div>
+    <b-card class="location-card" no-body>
+        <div class="row align-items-center" style="height: 110px;">
+            <div class="col">
+                <img src="@/assets/gramedia.png" alt="Gramedia" style="max-height: 80px" class="img-fluid" />
+
+            </div>
+
+            <div class="col-5">
+
+                <h3 class="row">{{locationName}}</h3>
+                <h5 class="row">{{sublocationName}}</h5>
+
+            </div>
+
+            <div class="col-4" style="height: 110px">
+
+                <div class="crowd-label" v-if="isCrowded">
+                    <div class="center font-white">
+                        <img src="@/assets/high.png" alt="high" class="img-fluid" style="max-height: 18px">
+                        <b style="margin-left: 10px">HIGH</b>
+                    </div>
+                </div>
+                <div class="crowd-label" v-else>
+                    <div class="center font-white">
+                        <img src="@/assets/high.png" alt="high" class="img-fluid" style="max-height: 18px">
+                        <b style="margin-left: 10px">LOW</b>
+                    </div>
+                </div>
+
+                <div class="center-paragraph">
+                    <div style="position: relative; height: 66px; width: 100%;">
+
+                        <div class="center"><b>Last Update:</b><br>{{lastUpdate}}</div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </b-card>
+</div>
 </template>
 
 <script>
 export default {
-    props: ['location_name', 'sublocations'],
+    props: ['locationName', 'sublocationName', "isCrowded", "lastUpdate"],
     name: 'LocationCard'
 }
 </script>
 
-<style>
+<style scoped>
 
+.location-card {
+    border-color: #CED4DA; 
+    border-width: 1.5px; 
+    overflow: hidden;
+
+}
+
+.center-paragraph {
+    height: 66px;
+    position: absolute;
+    bottom: 0%;
+    right: 0px;
+    width: 100%;
+}
+
+.center {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    font-size: 12px;
+}
+
+.font-white {
+    color: white;
+    font-size: 18px;
+}
+
+h3 {
+    font-size: 27px;
+}
+
+h5 {
+    font-size: 17px;
+}
+
+.crowd-label {
+    position: absolute; 
+    top: 0px; right: 0px; 
+    height: 40%; width: 100%; 
+    background-color: #DC3545; 
+    border-radius: 0px 0px 0px 50px;
+}
+
+@media screen and (max-width: 770px) {
+    h3 {
+        font-size: 21px;
+    }
+
+    h5 {
+        font-size: 13px;
+    }
+
+    .center {
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+        font-size: 9.5px;
+    }
+
+    .font-white {
+        color: white;
+        font-size: 15px;
+    }
+}
 </style>

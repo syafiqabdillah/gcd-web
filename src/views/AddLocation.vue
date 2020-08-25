@@ -1,20 +1,20 @@
 <template>
-  <div class="text-left">
-    <div align="center">
+  <div class="text-left container">
+    <div align="center" class="mb-4">
       <h3>
-        Add New Location
+        Register New Location
       </h3>
     </div>
 
-    <div class="add-location-container">
-      <b-row>
-        <b-col></b-col>
-        <b-col cols="12" md="8">
-          <b-card>
+    <div>
+      <b-row class="w-100 d-flex flex-row justify-content-center">
+        <!-- <b-col></b-col> -->
+        <div style="width: 65%">
+          <b-card style="padding: 25px 50px 25px 50px;">
             <b-form @submit="onSubmit">
               <b-form-group
                 id="input-add-location-form-1"
-                label="Location name:"
+                label="Location name"
                 label-for="location-name-form"
               >
                 <b-form-input
@@ -27,26 +27,32 @@
 
               <b-form-group
                 id="input-suggestion-form-2"
-                label="Sublocation names:"
+                label="Sublocation names"
                 label-for="sublocation-name-form"
               >
+                <b-form-text>e.g. Lobby, South gate, Basement</b-form-text>
                 <b-form-input
                   id="sublocation-name-form"
                   v-model="form.sublocation_names"
                   required
                   placeholder="Enter sublocation names, separated by comma"
                 ></b-form-input>
-                <b-form-text>e.g. Lobby, South gate, Basement</b-form-text>
+                
               </b-form-group>
 
-              <b-button block type="submit" variant="primary">
+              <div class="d-flex flex-row justify-content-center pt-3">
+                <b-button block type="submit" style="width: 50%; background-color: #4F59B0; border-width: 0px; padding: 10px;">
                 <b-spinner
                   type="grow"
                   small
                   v-if="isAddingLocation"
                 ></b-spinner>
-                {{ isAddingLocation ? "Submitting" : "Submit" }}
+                {{ isAddingLocation ? "Submitting" : "Add Location" }}
               </b-button>
+
+              </div>
+
+              
             </b-form>
           </b-card>
         <hr>
@@ -101,8 +107,7 @@
               </b-table>
             </div>
           </b-card>
-        </b-col>
-        <b-col></b-col>
+        </div>
       </b-row>
     </div>
   </div>
@@ -215,6 +220,8 @@ export default {
   margin-left: 30px;
   margin-right: 30px;
 }
+
+
 #location-table {
   margin-top: 30px;
   margin-left: 30px;
@@ -229,4 +236,28 @@ export default {
 button {
     background-color: #318fb5;
 }
+
+input {
+  border-width: 0;
+  border-bottom-width: 2px;
+  margin-bottom: 30px;
+}
+
+input:focus {
+  border-width: 0;
+  border-bottom-width: 2px;
+  margin-bottom: 30px;
+  box-shadow: 0 1px 1px rgba(81, 203, 238, 1);
+  color: black;
+}
+
+input:focus::placeholder {
+  color: rgba(81, 203, 238, 1);
+  
+}
+
+label {
+  color: black;
+}
+
 </style>

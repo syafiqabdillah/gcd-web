@@ -12,12 +12,21 @@
 </template>
 
 <style>
+
+html, body {
+  background-color: #F3F3F3;
+  
+}
+
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: roboto, Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  background-color: #F3F3F3;
+  
+  
 }
 
 #nav {
@@ -30,6 +39,6 @@
 }
 
 #nav a.router-link-exact-active {
-  color: #318fb5;
+  color: #4F59B0;
 }
 </style>
