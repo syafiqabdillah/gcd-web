@@ -159,22 +159,22 @@ export default {
         },
         sortedLocations() {
             if (this.sortedBy == "place"){
-                return this.locations.sort((a, b) => (a.location_name.localeCompare(b.location_name)))
+                return this.computedLocations.sort((a, b) => (a.location_name.localeCompare(b.location_name)))
 
             } else if (this.sortedBy == "venue"){
-                return this.locations.sort((a, b) => (a.sublocation_name.localeCompare(b.sublocation_name)))
+                return this.computedLocations.sort((a, b) => (a.sublocation_name.localeCompare(b.sublocation_name)))
 
             } else if (this.sortedBy == "time"){
-                return this.locations.sort((a, b) => 
+                return this.computedLocations.sort((a, b) => 
                     (moment(a.last_update).isAfter(b.last_update)? 1: -1)
                 )
 
             } else if (this.sortedBy == "crowd"){
-                return this.locations.sort((a, b) => 
+                return this.computedLocations.sort((a, b) => 
                     (a.is_crowded - b.is_crowded)
                 )
             } else {
-                return this.locations
+                return this.computedLocations
             }
         }
     },
